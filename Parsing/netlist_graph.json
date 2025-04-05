@@ -1,131 +1,138 @@
 {
-  "nodes": [
-    "G10",
-    "G5",
-    "G11",
-    "G6",
-    "G13",
-    "G7",
-    "G0",
-    "G14",
-    "G17",
-    "G8",
-    "G12",
-    "G15",
-    "G3",
-    "G16",
-    "G9",
-    "G1",
-    "G2"
-  ],
-  "edges": [
-    [
-      "G10",
-      "G5"
+    "primary_inputs": [
+        "G0",
+        "G1",
+        "G2",
+        "G3"
     ],
-    [
-      "G5",
-      "G11"
+    "primary_outputs": [
+        "G17"
     ],
-    [
-      "G11",
-      "G6"
+    "gates": [
+        "AND2_0",
+        "DFF_0",
+        "DFF_1",
+        "DFF_2",
+        "NAND2_0",
+        "NOR2_0",
+        "NOR2_1",
+        "NOR2_2",
+        "NOR2_3",
+        "NOT_0",
+        "NOT_1",
+        "OR2_0",
+        "OR2_1"
     ],
-    [
-      "G11",
-      "G17"
-    ],
-    [
-      "G11",
-      "G10"
-    ],
-    [
-      "G6",
-      "G8"
-    ],
-    [
-      "G13",
-      "G7"
-    ],
-    [
-      "G7",
-      "G12"
-    ],
-    [
-      "G0",
-      "G14"
-    ],
-    [
-      "G14",
-      "G8"
-    ],
-    [
-      "G14",
-      "G10"
-    ],
-    [
-      "G8",
-      "G15"
-    ],
-    [
-      "G8",
-      "G16"
-    ],
-    [
-      "G12",
-      "G15"
-    ],
-    [
-      "G12",
-      "G13"
-    ],
-    [
-      "G15",
-      "G9"
-    ],
-    [
-      "G3",
-      "G16"
-    ],
-    [
-      "G16",
-      "G9"
-    ],
-    [
-      "G9",
-      "G11"
-    ],
-    [
-      "G1",
-      "G12"
-    ],
-    [
-      "G2",
-      "G13"
+    "edges": [
+        {
+            "source": "DFF_0",
+            "target": "NOR2_1",
+            "signal": "G5"
+        },
+        {
+            "source": "DFF_1",
+            "target": "AND2_0",
+            "signal": "G6"
+        },
+        {
+            "source": "DFF_2",
+            "target": "NOR2_2",
+            "signal": "G7"
+        },
+        {
+            "source": "NOT_0",
+            "target": "AND2_0",
+            "signal": "G14"
+        },
+        {
+            "source": "NOT_0",
+            "target": "NOR2_0",
+            "signal": "G14"
+        },
+        {
+            "source": "NOT_1",
+            "target": "G17",
+            "signal": "G17"
+        },
+        {
+            "source": "AND2_0",
+            "target": "OR2_0",
+            "signal": "G8"
+        },
+        {
+            "source": "AND2_0",
+            "target": "OR2_1",
+            "signal": "G8"
+        },
+        {
+            "source": "OR2_0",
+            "target": "NAND2_0",
+            "signal": "G15"
+        },
+        {
+            "source": "OR2_1",
+            "target": "NAND2_0",
+            "signal": "G16"
+        },
+        {
+            "source": "NAND2_0",
+            "target": "NOR2_1",
+            "signal": "G9"
+        },
+        {
+            "source": "NOR2_0",
+            "target": "DFF_0",
+            "signal": "G10"
+        },
+        {
+            "source": "NOR2_1",
+            "target": "DFF_1",
+            "signal": "G11"
+        },
+        {
+            "source": "NOR2_1",
+            "target": "NOT_1",
+            "signal": "G11"
+        },
+        {
+            "source": "NOR2_1",
+            "target": "NOR2_0",
+            "signal": "G11"
+        },
+        {
+            "source": "NOR2_2",
+            "target": "OR2_0",
+            "signal": "G12"
+        },
+        {
+            "source": "NOR2_2",
+            "target": "NOR2_3",
+            "signal": "G12"
+        },
+        {
+            "source": "NOR2_3",
+            "target": "DFF_2",
+            "signal": "G13"
+        },
+        {
+            "source": "G2",
+            "target": "NOR2_3",
+            "signal": "G2"
+        },
+        {
+            "source": "G1",
+            "target": "NOR2_2",
+            "signal": "G1"
+        },
+        {
+            "source": "G3",
+            "target": "OR2_1",
+            "signal": "G3"
+        },
+        {
+            "source": "G0",
+            "target": "NOT_0",
+            "signal": "G0"
+        }
     ]
-  ],
-  "primary_inputs": [
-    "G3",
-    "G1",
-    "G0",
-    "G2"
-  ],
-  "primary_outputs": [
-    "G17"
-  ],
-  "gates": [
-    "G14",
-    "G10",
-    "G13",
-    "G15",
-    "G16",
-    "G7",
-    "G17",
-    "G5",
-    "G8",
-    "G11",
-    "G6",
-    "G9",
-    "G12"
-  ]
 }
