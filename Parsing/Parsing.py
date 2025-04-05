@@ -1,9 +1,10 @@
 import re
 import networkx as nx
 import matplotlib.pyplot as plt
+import json
 
 # === CONFIG ===
-file_path = "../BenchFiles/c17.bench"  # Change this to any .bench file you want to use
+file_path = "../BenchFiles/s27.bench"  # Change this to any .bench file you want to use
 
 # === PARSE NETLIST FILE ===
 with open(file_path, "r") as f:
@@ -55,9 +56,21 @@ for node in DG.nodes():
         color_map.append("skyblue")
 
 # === DRAW GRAPH ===
-print(edges)
 plt.figure(figsize=(12, 8))
 pos = nx.spring_layout(DG, seed=42)
 nx.draw(DG, pos, with_labels=True, node_color=color_map, node_size=1000, font_size=10, arrows=True)
 plt.title("Directed Netlist Graph\nPrimary Inputs (Green), Outputs (Red), Gates (Blue)")
 plt.show()
+
+## === Save Nodes and Edges to File ===
+
+
+# Convert graph to dict
+graph_data = {
+    "nodes": list(DG.nodes),
+    "edges": list(DG.edges)
+}
+
+# Save to JSON file
+with open("netlist_graph.json", "w") as f:
+    json.dump(graph_data, f, indent=2)
