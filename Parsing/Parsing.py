@@ -68,7 +68,10 @@ plt.show()
 # Convert graph to dict
 graph_data = {
     "nodes": list(DG.nodes),
-    "edges": list(DG.edges)
+    "edges": list(DG.edges),
+    "primary_inputs": list(primary_inputs),
+    "primary_outputs": list(primary_outputs),
+    "gates": list(gates),
 }
 
 # Save to JSON file
