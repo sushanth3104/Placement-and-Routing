@@ -10,6 +10,16 @@ from matplotlib.colors import ListedColormap
 
 # For plotting
 
+
+
+
+        
+
+
+
+
+
+
 def plot_circuit_grid(grid_size, PrimaryInput, PrimaryOutput, Gate):
     """
     Visualizes the digital circuit layout on a grid using seaborn heatmap.
@@ -74,7 +84,7 @@ def plot_circuit_grid(grid_size, PrimaryInput, PrimaryOutput, Gate):
 
     plt.xticks([])
     plt.yticks([])
-    plt.title(f"{grid_size}x{grid_size} Digital Circuit Grid", fontsize=18, weight='bold', pad=20)
+    plt.title(f"{grid_size}x{grid_size} Placeement Grid", fontsize=18, weight='bold', pad=20)
     plt.tight_layout()
     plt.show()
 
@@ -106,7 +116,22 @@ class Net:
         self.name = name
         self.primary_input_or_output = False  
         self.gates = set()  # gates connected to this signal
+        self.HPWL = 0
         Net.instances.append(self)
+
+    def update_hpwl(self):
+        x = []
+        y = []
+
+        for gate in self.gates:
+            x.append(gate.position[0])
+            y.append(gate.position[1])
+
+        self.HPWL = max(x) - min(x) + max(y) - min(y)
+       
+
+
+    
 
     def __repr__(self):
         return f"Net(name={self.name}, Primary in/op ={self.primary_input_or_output}, gates={list(self.gates)})"
@@ -116,6 +141,7 @@ class PrimaryInput:
     def __init__(self, name):
         self.name = name
         self.position = None # to be used later for layout
+        self.Net = None
         PrimaryInput.instances.append(self)
 
     def __repr__(self):
@@ -126,6 +152,7 @@ class PrimaryOutput:
     def __init__(self, name):
         self.name = name
         self.position = None # to be used later for layout
+        self.Net = None
         PrimaryOutput.instances.append(self)
 
     def __repr__(self):
@@ -140,21 +167,23 @@ grid_size = N + 2  # Includes columns for inputs and outputs
 
 
 # For PI : 
-pi_positions = random.sample(range(0, grid_size), len(circuit_data["primary_inputs"]))
+pi_positions = random.sample(range(1, grid_size-1), len(circuit_data["primary_inputs"]))
 
 
 for i, PI in enumerate(circuit_data["primary_inputs"]):
     pi_obj = PrimaryInput(PI)
     pi_obj.position = [pi_positions[i],0]  # Column 0, random row
+    pi_obj.Net = PI
 
 # For PO :
-po_positions = random.sample(range(0, grid_size), len(circuit_data["primary_outputs"]))
+po_positions = random.sample(range(1, grid_size-1), len(circuit_data["primary_outputs"]))
 
 for i, PO in enumerate(circuit_data["primary_outputs"]):
     po_obj = PrimaryOutput(PO)
     po_obj.position = [po_positions[i],grid_size-1]  # Column N+1, random row
+    po_obj.Net = PO
 
-valid_positions = [(i, j) for i in range(1, grid_size - 1) for j in range(1, grid_size - 1)]
+valid_positions = [[i, j] for i in range(1, grid_size - 1) for j in range(1, grid_size - 1)]
 random.shuffle(valid_positions)
 
 
@@ -172,13 +201,38 @@ nets = set(nets)
 for net in nets:
     net_obj = Net(net)
     net_obj.gates = set([gate for gate in Gate.instances if net in gate.inputs or net in gate.output])
+
+    ## Treat Primary input and Primary Output as Dummy Gates ad add them to the list as connected gates
+        
     if net in circuit_data["primary_inputs"]:
+        for pi in PrimaryInput.instances:
+            if pi.name == net_obj.name:
+                net_obj.gates.add(pi)
         net_obj.primary_input_or_output = True
+
     if net in circuit_data["primary_outputs"]:
+        for po in PrimaryOutput.instances:
+            if po.name == net_obj.name:
+                net_obj.gates.add(po)
         net_obj.primary_input_or_output = True
 
+    net_obj.update_hpwl()
+    
 
+
+
+    
 
 plot_circuit_grid(grid_size, PrimaryInput, PrimaryOutput, Gate)
+
+
+for net in Net.instances:
+    for gate in net.gates:
+        print(f"Net: {net.name}, Gate: {gate.name}, Position: {gate.position}")
+    print(net.HPWL)
+
+
+
+
 
 

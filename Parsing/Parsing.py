@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import json
 
 # Load Verilog file
-with open("../BenchFiles/s27.v", "r") as file:
+with open("../BenchFiles/c17.v", "r") as file:
     verilog_text = file.read()
 
 # Initialize sets
