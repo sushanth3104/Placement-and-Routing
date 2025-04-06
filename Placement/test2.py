@@ -10,10 +10,53 @@ from matplotlib.colors import ListedColormap
 
 # For plotting
 
+def RandomIterativeImprovement(Net, Gate):
+     
+     L1 = 0 
+  
+     
+     for net in Net.instances:
+         L1 += net.HPWL
+    
+     tracking_progress = [L1]
 
+     for i in range(100000):
+         
+         # Randomly select a two gates
+        gate1, gate2 = random.sample(Gate.instances, 2)
+            # Swap their positions
+        gate1.position, gate2.position = gate2.position, gate1.position
+        # Recalculate HPWL for the affected nets
+        for net in [aff_net for aff_net in Net.instances if gate1 in aff_net.gates or gate2 in aff_net.gates]:
+            # Calculate the change in HPWL
+            net.update_hpwl()
 
-
+        L2 = 0 
         
+        for net in Net.instances:
+            L2 += net.HPWL
+
+        if L2 < L1:
+            L1 = L2  # Keep the new positions
+            tracking_progress.append(L1)
+            
+        else:
+            # Revert the swap
+            gate1.position, gate2.position = gate2.position, gate1.position
+            # Recalculate HPWL for the affected nets
+            for net in [aff_net for aff_net in Net.instances if gate1 in aff_net.gates or gate2 in aff_net.gates]:
+                net.update_hpwl()
+
+
+        # Plotting the tracking progress : Stem Plot
+     index = list(range(len(tracking_progress)))
+     plt.stem(index,tracking_progress)
+     plt.title("cost Plot")
+     plt.xlabel("Index")
+     plt.ylabel("Value")
+     plt.grid(True)
+     plt.show()
+         
 
 
 
@@ -128,6 +171,7 @@ class Net:
             y.append(gate.position[1])
 
         self.HPWL = max(x) - min(x) + max(y) - min(y)
+
        
 
 
@@ -198,6 +242,8 @@ for i,gate in enumerate(circuit_data["gates"]):
 nets = circuit_data["primary_inputs"] + circuit_data["primary_outputs"] + [edge["signal"] for edge in circuit_data["edges"]]
 nets = set(nets)
 
+L = 0 # Total HPWL 
+
 for net in nets:
     net_obj = Net(net)
     net_obj.gates = set([gate for gate in Gate.instances if net in gate.inputs or net in gate.output])
@@ -217,19 +263,42 @@ for net in nets:
         net_obj.primary_input_or_output = True
 
     net_obj.update_hpwl()
-    
-
-
 
     
+
+
+
+# For Random Iterative Improvement : Only Pure gates are allowed to move
+plot_circuit_grid(grid_size, PrimaryInput, PrimaryOutput, Gate)
+
+Total_HPWL = 0
+for net in Net.instances:
+    Total_HPWL += net.HPWL
+
+print("Total Initial HPWL:", Total_HPWL)
+
+for net in Net.instances:
+   for gate in net.gates:
+        print(f"Net: {net.name}, Gate: {gate.name}, Position: {gate.position}")
+   print(net.HPWL)
+
+
+RandomIterativeImprovement(Net,Gate)
+
+Total_HPWL = 0
+for net in Net.instances:
+    Total_HPWL += net.HPWL
+
+print("Total HPWL after Random Improvement:", Total_HPWL)
+
 
 plot_circuit_grid(grid_size, PrimaryInput, PrimaryOutput, Gate)
 
 
-for net in Net.instances:
-    for gate in net.gates:
-        print(f"Net: {net.name}, Gate: {gate.name}, Position: {gate.position}")
-    print(net.HPWL)
+#for net in Net.instances:
+#  for gate in net.gates:
+#       print(f"Net: {net.name}, Gate: {gate.name}, Position: {gate.position}")
+#  print(net.HPWL)
 
 
 

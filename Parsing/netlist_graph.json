@@ -1,93 +1,138 @@
 {
     "primary_inputs": [
-        "N1",
-        "N2",
-        "N3",
-        "N6",
-        "N7"
+        "G0",
+        "G1",
+        "G2",
+        "G3"
     ],
     "primary_outputs": [
-        "N22",
-        "N23"
+        "G17"
     ],
     "gates": [
-        "NAND2_1",
-        "NAND2_2",
-        "NAND2_3",
-        "NAND2_4",
-        "NAND2_5",
-        "NAND2_6"
+        "AND2_0",
+        "DFF_0",
+        "DFF_1",
+        "DFF_2",
+        "NAND2_0",
+        "NOR2_0",
+        "NOR2_1",
+        "NOR2_2",
+        "NOR2_3",
+        "NOT_0",
+        "NOT_1",
+        "OR2_0",
+        "OR2_1"
     ],
     "edges": [
         {
-            "source": "NAND2_1",
-            "target": "NAND2_5",
-            "signal": "N10"
+            "source": "DFF_0",
+            "target": "NOR2_1",
+            "signal": "G5"
         },
         {
-            "source": "NAND2_2",
-            "target": "NAND2_3",
-            "signal": "N11"
+            "source": "DFF_1",
+            "target": "AND2_0",
+            "signal": "G6"
         },
         {
-            "source": "NAND2_2",
-            "target": "NAND2_4",
-            "signal": "N11"
+            "source": "DFF_2",
+            "target": "NOR2_2",
+            "signal": "G7"
         },
         {
-            "source": "NAND2_3",
-            "target": "NAND2_5",
-            "signal": "N16"
+            "source": "NOT_0",
+            "target": "AND2_0",
+            "signal": "G14"
         },
         {
-            "source": "NAND2_3",
-            "target": "NAND2_6",
-            "signal": "N16"
+            "source": "NOT_0",
+            "target": "NOR2_0",
+            "signal": "G14"
         },
         {
-            "source": "NAND2_4",
-            "target": "NAND2_6",
-            "signal": "N19"
+            "source": "NOT_1",
+            "target": "G17",
+            "signal": "G17"
         },
         {
-            "source": "NAND2_5",
-            "target": "N22",
-            "signal": "N22"
+            "source": "AND2_0",
+            "target": "OR2_0",
+            "signal": "G8"
         },
         {
-            "source": "NAND2_6",
-            "target": "N23",
-            "signal": "N23"
+            "source": "AND2_0",
+            "target": "OR2_1",
+            "signal": "G8"
         },
         {
-            "source": "N7",
-            "target": "NAND2_4",
-            "signal": "N7"
+            "source": "OR2_0",
+            "target": "NAND2_0",
+            "signal": "G15"
         },
         {
-            "source": "N2",
-            "target": "NAND2_3",
-            "signal": "N2"
+            "source": "OR2_1",
+            "target": "NAND2_0",
+            "signal": "G16"
         },
         {
-            "source": "N1",
-            "target": "NAND2_1",
-            "signal": "N1"
+            "source": "NAND2_0",
+            "target": "NOR2_1",
+            "signal": "G9"
         },
         {
-            "source": "N6",
-            "target": "NAND2_2",
-            "signal": "N6"
+            "source": "NOR2_0",
+            "target": "DFF_0",
+            "signal": "G10"
         },
         {
-            "source": "N3",
-            "target": "NAND2_1",
-            "signal": "N3"
+            "source": "NOR2_1",
+            "target": "DFF_1",
+            "signal": "G11"
         },
         {
-            "source": "N3",
-            "target": "NAND2_2",
-            "signal": "N3"
+            "source": "NOR2_1",
+            "target": "NOT_1",
+            "signal": "G11"
+        },
+        {
+            "source": "NOR2_1",
+            "target": "NOR2_0",
+            "signal": "G11"
+        },
+        {
+            "source": "NOR2_2",
+            "target": "OR2_0",
+            "signal": "G12"
+        },
+        {
+            "source": "NOR2_2",
+            "target": "NOR2_3",
+            "signal": "G12"
+        },
+        {
+            "source": "NOR2_3",
+            "target": "DFF_2",
+            "signal": "G13"
+        },
+        {
+            "source": "G3",
+            "target": "OR2_1",
+            "signal": "G3"
+        },
+        {
+            "source": "G2",
+            "target": "NOR2_3",
+            "signal": "G2"
+        },
+        {
+            "source": "G0",
+            "target": "NOT_0",
+            "signal": "G0"
+        },
+        {
+            "source": "G1",
+            "target": "NOR2_2",
+            "signal": "G1"
         }
     ]
 }
