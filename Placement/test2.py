@@ -1,4 +1,5 @@
 import json
+import math
 from collections import defaultdict
 import json
 import random
@@ -10,53 +11,54 @@ from matplotlib.colors import ListedColormap
 
 # For plotting
 
-def RandomIterativeImprovement(Net, Gate):
-     
-     L1 = 0 
-  
-     
-     for net in Net.instances:
-         L1 += net.HPWL
-    
-     tracking_progress = [L1]
+def SimulatedAnnealingPlacement(Net, Gate, initial_temp=100.0, final_temp=0.1, alpha=0.995, max_iters=10000):
+    T = initial_temp
+    L1 = sum(net.HPWL for net in Net.instances)
+    tracking_progress = [L1]
 
-     for i in range(100000):
-         
-         # Randomly select a two gates
+    for i in range(max_iters):
+    # Randomly select two gates
         gate1, gate2 = random.sample(Gate.instances, 2)
-            # Swap their positions
+
+    # Swap positions
         gate1.position, gate2.position = gate2.position, gate1.position
-        # Recalculate HPWL for the affected nets
-        for net in [aff_net for aff_net in Net.instances if gate1 in aff_net.gates or gate2 in aff_net.gates]:
-            # Calculate the change in HPWL
+
+    # Recalculate HPWL for affected nets
+        affected_nets = [net for net in Net.instances if gate1 in net.gates or gate2 in net.gates]
+        for net in affected_nets:
             net.update_hpwl()
 
-        L2 = 0 
-        
-        for net in Net.instances:
-            L2 += net.HPWL
+    # Compute new cost
+        L2 = sum(net.HPWL for net in Net.instances)
+        delta = L2 - L1
 
-        if L2 < L1:
-            L1 = L2  # Keep the new positions
+    # Decide whether to accept
+        if delta < 0 or random.random() < math.exp(-delta / T):
+        # Accept move
+            L1 = L2
             tracking_progress.append(L1)
-            
         else:
-            # Revert the swap
+        # Revert swap
             gate1.position, gate2.position = gate2.position, gate1.position
-            # Recalculate HPWL for the affected nets
-            for net in [aff_net for aff_net in Net.instances if gate1 in aff_net.gates or gate2 in aff_net.gates]:
+            for net in affected_nets:
                 net.update_hpwl()
 
+    # Cool down temperature
+        T *= alpha
 
-        # Plotting the tracking progress : Stem Plot
-     index = list(range(len(tracking_progress)))
-     plt.stem(index,tracking_progress)
-     plt.title("cost Plot")
-     plt.xlabel("Index")
-     plt.ylabel("Value")
-     plt.grid(True)
-     plt.show()
-         
+    # Optional early stop
+        if T < final_temp:
+            break
+
+# Plot cost trend
+    plt.figure(figsize=(10, 4))
+    plt.stem(range(len(tracking_progress)), tracking_progress, basefmt=" ")
+    plt.title("Simulated Annealing - HPWL Progress")
+    plt.xlabel("Iteration")
+    plt.ylabel("Total HPWL")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
 
 
 
@@ -127,7 +129,7 @@ def plot_circuit_grid(grid_size, PrimaryInput, PrimaryOutput, Gate):
 
     plt.xticks([])
     plt.yticks([])
-    plt.title(f"{grid_size}x{grid_size} Placeement Grid", fontsize=18, weight='bold', pad=20)
+    plt.title(f"{grid_size}x{grid_size} Placement Grid", fontsize=18, weight='bold', pad=20)
     plt.tight_layout()
     plt.show()
 
@@ -283,7 +285,7 @@ for net in Net.instances:
    print(net.HPWL)
 
 
-RandomIterativeImprovement(Net,Gate)
+SimulatedAnnealingPlacement(Net,Gate)
 
 Total_HPWL = 0
 for net in Net.instances:

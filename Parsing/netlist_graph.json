@@ -115,6 +115,11 @@
             "signal": "G13"
         },
         {
+            "source": "G1",
+            "target": "NOR2_2",
+            "signal": "G1"
+        },
+        {
             "source": "G3",
             "target": "OR2_1",
             "signal": "G3"
@@ -128,11 +133,6 @@
             "source": "G0",
             "target": "NOT_0",
             "signal": "G0"
-        },
-        {
-            "source": "G1",
-            "target": "NOR2_2",
-            "signal": "G1"
         }
     ]
 }
